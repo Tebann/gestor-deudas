@@ -3,44 +3,46 @@ import './App.css';
 import AddDebtForm from './components/AddDebtForm/AddDebtForm';
 import AddPaymentForm from './components/AddPaymentForm/AddPaymentForm';
 import DebtList from './components/DebtList/DebtList';
+import { useDeudas } from './context/DeudasContext'; // 👈 1. IMPORTAMOS EL HOOK
 
 function App() {
-  const [debts, setDebts] = useState([
-  ]);
+  // 🔽 2. OBTENEMOS TODO DEL CONTEXTO
+  const { deudas, addDeuda, removeDeuda, updateDeuda } = useDeudas();
 
+  // El estado para saber qué deuda está seleccionada puede seguir siendo local.
   const [selectedDebt, setSelectedDebt] = useState(null);
 
+  // 🔽 3. ADAPTAMOS LAS FUNCIONES PARA QUE USEN EL CONTEXTO
   const handleAddDebt = (debt) => {
-    setDebts([...debts, { ...debt, id: Date.now(), payments: [] }]);
+    // Le añadimos la propiedad 'payments' vacía que tu lógica esperaba.
+    addDeuda({ ...debt, payments: [] });
   };
 
   const handleAddPayment = (payment) => {
-    const updatedDebts = debts.map(debt => {
-      if (debt.id === parseInt(payment.debtId)) {
-        return {
-          ...debt,
-          payments: [...debt.payments, { amount: payment.amount, date: new Date().toISOString().slice(0, 10) }]
-        };
-      }
-      return debt;
-    });
-    setDebts(updatedDebts);
+    const debtId = parseInt(payment.debtId);
+    const targetDebt = deudas.find(d => d.id === debtId);
+
+    if (targetDebt) {
+      const newPayment = {
+        amount: payment.amount,
+        date: new Date().toISOString().slice(0, 10)
+      };
+      // Usamos 'updateDeuda' para actualizar los pagos de la deuda correcta.
+      updateDeuda(debtId, { payments: [...targetDebt.payments, newPayment] });
+    }
+  };
+
+  const handleDeleteDebt = (debtIdToDelete) => {
+    if (selectedDebt && selectedDebt.id === debtIdToDelete) {
+      setSelectedDebt(null);
+    }
+    // Llamamos a la función del contexto.
+    removeDeuda(debtIdToDelete);
   };
 
   const handleSelectDebt = (debt) => {
     setSelectedDebt(debt);
   };
-
-  // --- NUEVA FUNCIÓN ---
-  // Esta función filtrará la lista de deudas, quitando la que tenga el ID correspondiente.
-  const handleDeleteDebt = (debtIdToDelete) => {
-    // Si la deuda eliminada es la que está seleccionada, limpiamos la selección.
-    if (selectedDebt && selectedDebt.id === debtIdToDelete) {
-      setSelectedDebt(null);
-    }
-    setDebts(debts.filter(debt => debt.id !== debtIdToDelete));
-  };
-  // --------------------
 
   return (
     <div className="app-container">
@@ -49,19 +51,17 @@ function App() {
       </header>
       <main className="main-content">
         <div className="interactive-column">
+          {/* Los componentes ahora usan las nuevas funciones */}
           <AddDebtForm onAddDebt={handleAddDebt} />
-          <AddPaymentForm debts={debts} onAddPayment={handleAddPayment} />
+          <AddPaymentForm debts={deudas} onAddPayment={handleAddPayment} />
         </div>
         <div className="visual-column">
-          {/* --- PROP NUEVA --- 
-          Pasamos la nueva función al componente de la lista de deudas */}
           <DebtList
-            debts={debts}
+            debts={deudas}
             onSelectDebt={handleSelectDebt}
             selectedDebt={selectedDebt}
-            onDeleteDebt={handleDeleteDebt} 
+            onDeleteDebt={handleDeleteDebt}
           />
-          {/* -------------------- */}
         </div>
       </main>
     </div>

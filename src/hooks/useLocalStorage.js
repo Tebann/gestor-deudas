@@ -1,31 +1,26 @@
 import { useState, useEffect } from 'react';
 
-/**
- * useLocalStorage
- * key: string -> clave en localStorage
- * initialValue: valor inicial (o función que devuelva valor)
- *
- * Retorna [estado, setter] exactamente como useState, pero persistente en localStorage.
- */
 export function useLocalStorage(key, initialValue) {
-  const [state, setState] = useState(() => {
+  // 1. Obtenemos el valor inicial desde localStorage o usamos el valor por defecto.
+  const [storedValue, setStoredValue] = useState(() => {
     try {
-      const raw = window.localStorage.getItem(key);
-      if (raw !== null) return JSON.parse(raw);
-      return typeof initialValue === 'function' ? initialValue() : initialValue;
-    } catch (e) {
-      console.error('useLocalStorage: read error', e);
-      return typeof initialValue === 'function' ? initialValue() : initialValue;
+      const item = window.localStorage.getItem(key);
+      return item ? JSON.parse(item) : initialValue;
+    } catch (error) {
+      console.error(error);
+      return initialValue;
     }
   });
 
+  // 2. Creamos un useEffect que se ejecute cada vez que el estado 'storedValue' cambie.
+  // Esto guardará el nuevo valor en localStorage.
   useEffect(() => {
     try {
-      window.localStorage.setItem(key, JSON.stringify(state));
-    } catch (e) {
-      console.error('useLocalStorage: write error', e);
+      window.localStorage.setItem(key, JSON.stringify(storedValue));
+    } catch (error) {
+      console.error(error);
     }
-  }, [key, state]);
+  }, [key, storedValue]);
 
-  return [state, setState];
+  return [storedValue, setStoredValue];
 }
