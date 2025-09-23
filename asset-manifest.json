@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/gestor-deudas/static/css/main.49ba76a3.css",
+    "main.js": "/gestor-deudas/static/js/main.cc556d49.js",
+    "static/js/488.1cb639ac.chunk.js": "/gestor-deudas/static/js/488.1cb639ac.chunk.js",
+    "index.html": "/gestor-deudas/index.html",
+    "main.49ba76a3.css.map": "/gestor-deudas/static/css/main.49ba76a3.css.map",
+    "main.cc556d49.js.map": "/gestor-deudas/static/js/main.cc556d49.js.map",
+    "488.1cb639ac.chunk.js.map": "/gestor-deudas/static/js/488.1cb639ac.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.49ba76a3.css",
+    "static/js/main.cc556d49.js"
+  ]
+}
