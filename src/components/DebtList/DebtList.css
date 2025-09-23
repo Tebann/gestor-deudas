@@ -1,0 +1,122 @@
+.debt-list-container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.debt-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  border: 1px solid #e1e1e1;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.debt-item:hover {
+  border-color: #007aff;
+  background-color: #f5f5f7;
+}
+
+.debt-item.selected {
+  border-color: #007aff;
+  background-color: #e5f1ff;
+  box-shadow: 0 0 0 2px rgba(0, 122, 255, 0.3);
+}
+
+.debt-info h3 {
+  margin: 0 0 5px 0;
+  font-size: 1.1rem;
+}
+
+.debt-info p {
+  margin: 0;
+  color: #6e6e73;
+}
+
+.debt-balance {
+  text-align: right;
+}
+
+.debt-balance h4 {
+  margin: 0 0 5px 0;
+  color: #6e6e73;
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+.debt-balance span {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #d93611; /* Color rojo para el saldo */
+}
+
+/* Historial de Pagos */
+.payment-history-card.placeholder {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 150px;
+  color: #888;
+  font-style: italic;
+}
+
+.payment-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.payment-list-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 0;
+  border-bottom: 1px solid #e1e1e1;
+}
+
+.payment-list-item:last-child {
+  border-bottom: none;
+}
+
+.payment-list-item span {
+  color: #6e6e73;
+}
+
+.payment-list-item strong {
+  color: #1a8a2a; /* Color verde para los abonos */
+  font-weight: 600;
+}
+
+
+.debt-item {
+  position: relative; /* Necesario para posicionar el botón dentro del item */
+  overflow: hidden;   /* Oculta lo que se salga del borde redondeado */
+}
+
+.delete-btn {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 150px;
+  background-color: #ff3b30; /* Rojo típico de eliminar en iOS */
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 1rem;
+  
+  /* Transición para que aparezca suavemente */
+  transform: translateX(100%);
+  transition: transform 0.2s ease-in-out;
+}
+
+.debt-item:hover .delete-btn {
+  transform: translateX(0); /* El botón aparece al pasar el mouse */
+}
+
+.delete-btn:hover {
+  background-color: #d92c23; /* Un rojo un poco más oscuro al pasar el mouse */
+}
