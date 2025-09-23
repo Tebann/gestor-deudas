@@ -6,7 +6,6 @@ import DebtList from './components/DebtList/DebtList';
 
 function App() {
   const [debts, setDebts] = useState([
-
   ]);
 
   const [selectedDebt, setSelectedDebt] = useState(null);
