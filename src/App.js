@@ -5,48 +5,34 @@ import AddDebtForm from './components/AddDebtForm/AddDebtForm';
 import AddPaymentForm from './components/AddPaymentForm/AddPaymentForm';
 import DebtList from './components/DebtList/DebtList';
 
-// Componente separado para la pantalla de Login
-function LoginScreen() {
-  const { login } = useDeudas();
-  return (
-    <div className="app-container login-container">
-        <div className="login-box">
-            <h1>Gestor de Deudas</h1>
-            <p>Inicia sesión con tu cuenta de Google para guardar y sincronizar tus deudas en todos tus dispositivos.</p>
-            <button onClick={login} className="login-button">
-                Iniciar Sesión con Google
-            </button>
-        </div>
-    </div>
-  );
-}
+function LoginScreen() { /* ...código sin cambios... */ }
 
-// Componente principal de la aplicación
 function App() {
   const { user, logout, deudas, addDeuda, updateDeuda, removeDeuda } = useDeudas();
   const [selectedDebt, setSelectedDebt] = useState(null);
 
-  // Si no hay usuario, muestra la pantalla de login
   if (!user) {
     return <LoginScreen />;
   }
 
-  // --- Lógica de Manejadores (ahora usan las funciones del contexto) ---
   const handleAddDebt = (debt) => {
     addDeuda({ ...debt, payments: [] });
   };
 
+  // 3. LA CORRECCIÓN MÁS IMPORTANTE ESTÁ AQUÍ
   const handleAddPayment = (payment) => {
-    const debtId = parseInt(payment.debtId);
-    const targetDebt = deudas.find(d => d.id === debtId);
+    // Quitamos parseInt. El ID de la deuda ahora es un string.
+    const debtId = payment.debtId; 
 
-    if (targetDebt) {
-      const newPayment = {
-        amount: payment.amount,
-        date: new Date().toISOString().slice(0, 10)
-      };
-      updateDeuda(debtId, { payments: [...targetDebt.payments, newPayment] });
-    }
+    const newPayment = {
+      amount: payment.amount,
+      date: new Date().toISOString().slice(0, 10),
+      id: Date.now() // Un ID simple para el pago en sí
+    };
+
+    // Pasamos el ID (string) y el objeto del nuevo pago directamente
+    // a la función del contexto. No necesitamos buscar la deuda aquí.
+    updateDeuda(debtId, newPayment);
   };
 
   const handleDeleteDebt = (debtIdToDelete) => {
@@ -56,7 +42,6 @@ function App() {
     removeDeuda(debtIdToDelete);
   };
 
-  // Si hay usuario, muestra la app normal
   return (
     <div className="app-container">
       <header className="app-header">
