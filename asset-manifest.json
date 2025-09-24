@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/gestor-deudas/static/css/main.49ba76a3.css",
-    "main.js": "/gestor-deudas/static/js/main.ecb919c0.js",
+    "main.css": "/gestor-deudas/static/css/main.9ea80e76.css",
+    "main.js": "/gestor-deudas/static/js/main.3f421315.js",
     "index.html": "/gestor-deudas/index.html",
-    "main.49ba76a3.css.map": "/gestor-deudas/static/css/main.49ba76a3.css.map",
-    "main.ecb919c0.js.map": "/gestor-deudas/static/js/main.ecb919c0.js.map"
+    "main.9ea80e76.css.map": "/gestor-deudas/static/css/main.9ea80e76.css.map",
+    "main.3f421315.js.map": "/gestor-deudas/static/js/main.3f421315.js.map"
   },
   "entrypoints": [
-    "static/css/main.49ba76a3.css",
-    "static/js/main.ecb919c0.js"
+    "static/css/main.9ea80e76.css",
+    "static/js/main.3f421315.js"
   ]
 }
