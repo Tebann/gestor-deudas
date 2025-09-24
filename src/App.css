@@ -1,18 +1,13 @@
+/* --- Estilos Generales y de Layout --- */
 .app-container {
   max-width: 1200px;
   margin: 40px auto;
   padding: 0 20px;
 }
 
-.app-header h1 {
-  font-size: 2.5rem;
-  font-weight: 600;
-  margin-bottom: 30px;
-}
-
 .main-content {
   display: grid;
-  grid-template-columns: 1fr 1.5fr; /* Columna izquierda más pequeña */
+  grid-template-columns: 1fr 1.5fr; /* Columna izquierda más pequeña en PC */
   gap: 30px;
 }
 
@@ -22,3 +17,121 @@
   gap: 30px;
 }
 
+/* --- Estilos de la Cabecera (Header) --- */
+.app-header {
+  display: flex;
+  justify-content: space-between; /* Alinea el título a la izq. y la info de usuario a la der. */
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.app-header h1 {
+  font-size: 2.5rem;
+  font-weight: 600;
+  margin: 0; /* Quitamos el margen que tenía para que se alinee bien */
+}
+
+/* --- NUEVO: Estilos de la Información de Usuario (Logueado) --- */
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 15px; /* Espacio entre avatar, nombre y botón */
+}
+
+.user-avatar {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%; /* Hace la imagen redonda */
+  object-fit: cover;
+  border: 2px solid #ddd;
+}
+
+.logout-button {
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.logout-button:hover {
+  background-color: #c0392b;
+}
+
+/* --- NUEVO: Estilos de la Pantalla de Login --- */
+.login-container {
+  /* Centra la caja de login vertical y horizontalmente en toda la pantalla */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 80vh; /* Ocupa casi toda la altura de la ventana */
+  text-align: center;
+}
+
+.login-box {
+  background-color: #ffffff;
+  padding: 40px 50px;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  max-width: 500px;
+}
+
+.login-box h1 {
+  font-size: 2.2rem;
+  margin-bottom: 15px;
+}
+
+.login-box p {
+  color: #666;
+  margin-bottom: 30px;
+  line-height: 1.5;
+}
+
+.login-button {
+  background-color: #4285F4; /* Color oficial de Google */
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 5px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.login-button:hover {
+  background-color: #357ae8;
+}
+
+/* --- Estilos Responsive --- */
+@media (max-width: 768px) {
+  .main-content {
+    grid-template-columns: 1fr; /* Hacemos que el grid tenga una sola columna */
+    gap: 20px;
+  }
+
+  .app-container {
+    margin: 20px auto; /* Reducimos el margen en los lados */
+  }
+
+  .app-header {
+    flex-direction: column; /* Apila el título y la info de usuario */
+    align-items: flex-start; /* Alinea todo a la izquierda */
+    gap: 20px;
+  }
+
+  .app-header h1 {
+    font-size: 2rem; /* Hacemos el título un poco más pequeño */
+  }
+
+  .user-info {
+    width: 100%; /* Ocupa todo el ancho para justificar el botón al final */
+    justify-content: space-between;
+  }
+}
