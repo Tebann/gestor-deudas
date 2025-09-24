@@ -20,11 +20,18 @@ export function DeudasProvider({ children }) {
   const [loading, setLoading] = useState(true);
 
   // --- Lógica de Autenticación (sin cambios) ---
-  const login = async () => { /* ...código sin cambios... */ };
+  const login = async () => {
+  try {
+    await signInWithPopup(auth, googleProvider);
+  } catch (error) {
+    console.error("Error al iniciar sesión con Google", error);
+  }
+};
   const logout = async () => { /* ...código sin cambios... */ };
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      console.log("El estado de autenticación cambió. Usuario:", currentUser);
       setUser(currentUser);
       setLoading(false);
     });

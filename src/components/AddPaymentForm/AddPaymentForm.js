@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-// Importamos los mismos estilos del otro formulario para mantener consistencia
 import '../AddDebtForm/AddDebtForm.css';
 
 function AddPaymentForm({ debts, onAddPayment }) {
@@ -9,8 +8,9 @@ function AddPaymentForm({ debts, onAddPayment }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!debtId || !amount) return;
-    onAddPayment({ debtId, amount: parseFloat(amount) });
-    setDebtId('');
+    // El objeto que se envía a App.js ya tiene los nombres correctos.
+    onAddPayment({ debtId, amount });
+    // No reseteamos debtId para que el usuario pueda añadir varios abonos a la misma deuda.
     setAmount('');
   };
 
@@ -24,7 +24,9 @@ function AddPaymentForm({ debts, onAddPayment }) {
             <option value="">-- Elige una deuda --</option>
             {debts.map(debt => (
               <option key={debt.id} value={debt.id}>
-                {debt.name}
+                {/* --- CORRECCIÓN --- */}
+                {/* Se muestra 'debt.descripcion' en lugar del incorrecto 'debt.name'. */}
+                {debt.descripcion}
               </option>
             ))}
           </select>
@@ -33,7 +35,7 @@ function AddPaymentForm({ debts, onAddPayment }) {
           <label>Valor del abono ($)</label>
           <input
             type="number"
-            placeholder=""
+            placeholder="Ej: 10000"
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
           />

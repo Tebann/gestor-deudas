@@ -15,6 +15,7 @@ const firebaseConfig = {
 
 // Inicializa Firebase
 const app = initializeApp(firebaseConfig);
+console.log("Firebase se ha inicializado correctamente.");
 
 // Exporta los servicios que usarás
 export const auth = getAuth(app);

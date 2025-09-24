@@ -5,7 +5,20 @@ import AddDebtForm from './components/AddDebtForm/AddDebtForm';
 import AddPaymentForm from './components/AddPaymentForm/AddPaymentForm';
 import DebtList from './components/DebtList/DebtList';
 
-function LoginScreen() { /* ...código sin cambios... */ }
+function LoginScreen() {
+  const { login } = useDeudas();
+  return (
+    <div className="app-container login-container">
+        <div className="login-box">
+            <h1>Gestor de Deudas</h1>
+            <p>Inicia sesión con tu cuenta de Google para guardar y sincronizar tus deudas en todos tus dispositivos.</p>
+            <button onClick={login} className="login-button">
+                Iniciar Sesión con Google
+            </button>
+        </div>
+    </div>
+  );
+}
 
 function App() {
   const { user, logout, deudas, addDeuda, updateDeuda, removeDeuda } = useDeudas();
@@ -15,23 +28,28 @@ function App() {
     return <LoginScreen />;
   }
 
+  // --- CORRECCIÓN ---
+  // Esta función ahora recibe correctamente { descripcion, monto } desde el formulario.
   const handleAddDebt = (debt) => {
-    addDeuda({ ...debt, payments: [] });
+    // Se asegura de que el monto sea un número y de que la descripción no sea nula.
+    const newDebtData = {
+      descripcion: debt.descripcion || '',
+      monto: Number(debt.monto) || 0,
+      payments: [],
+      fechaCreacion: new Date()
+    };
+    // Se envía el objeto ya limpio y formateado al contexto.
+    addDeuda(newDebtData);
   };
 
-  // 3. LA CORRECCIÓN MÁS IMPORTANTE ESTÁ AQUÍ
   const handleAddPayment = (payment) => {
-    // Quitamos parseInt. El ID de la deuda ahora es un string.
-    const debtId = payment.debtId; 
-
+    const debtId = payment.debtId;
     const newPayment = {
-      amount: payment.amount,
+      // Se asegura de que el monto del abono sea un número.
+      amount: Number(payment.amount) || 0,
       date: new Date().toISOString().slice(0, 10),
-      id: Date.now() // Un ID simple para el pago en sí
+      id: Date.now()
     };
-
-    // Pasamos el ID (string) y el objeto del nuevo pago directamente
-    // a la función del contexto. No necesitamos buscar la deuda aquí.
     updateDeuda(debtId, newPayment);
   };
 

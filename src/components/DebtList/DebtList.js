@@ -1,49 +1,46 @@
 import React from 'react';
 import './DebtList.css';
 
-// Función para formatear dinero
+// --- Función de Utilidad ---
 const formatCurrency = (value) => {
+  const numberValue = Number(value) || 0;
   return new Intl.NumberFormat('es-CO', {
     style: 'currency',
     currency: 'COP',
     minimumFractionDigits: 0,
     maximumFractionDigits: 0,
-  }).format(value);
+  }).format(numberValue);
 };
 
-// --- COMPONENTE MODIFICADO ---
-// Ahora recibe onDeleteDebt y tiene un botón para eliminar.
+// --- Componente para un solo ítem de la lista (Estilo Anterior) ---
 const DebtItem = ({ debt, onSelectDebt, isSelected, onDeleteDebt }) => {
-  const totalPaid = debt.payments.reduce((sum, payment) => sum + payment.amount, 0);
-  const currentBalance = debt.initialAmount - totalPaid;
+  const montoInicial = Number(debt.monto) || 0;
+  const totalPagado = (debt.payments || []).reduce((sum, payment) => sum + (Number(payment.amount) || 0), 0);
+  const saldoActual = montoInicial - totalPagado;
 
   const handleDeleteClick = (e) => {
-    // Esto evita que al hacer clic en el botón, también se seleccione la deuda.
-    e.stopPropagation(); 
+    e.stopPropagation();
     onDeleteDebt(debt.id);
   };
 
   return (
     <div className={`debt-item ${isSelected ? 'selected' : ''}`} onClick={() => onSelectDebt(debt)}>
       <div className="debt-info">
-        <h3>{debt.name}</h3>
-        <p>Valor inicial: {formatCurrency(debt.initialAmount)}</p>
+        <h3>{debt.descripcion}</h3>
+        <p>Valor inicial: {formatCurrency(montoInicial)}</p>
       </div>
       <div className="debt-balance">
         <h4>Saldo Actual</h4>
-        <span>{formatCurrency(currentBalance)}</span>
+        <span>{formatCurrency(saldoActual)}</span>
       </div>
-      {/* --- BOTÓN NUEVO --- */}
       <button onClick={handleDeleteClick} className="delete-btn">
-        Eliminar
+        &times;
       </button>
-      {/* ------------------- */}
     </div>
   );
 };
-// -----------------------------
 
-// Componente para el historial de pagos (sin cambios)
+// --- Componente para el historial de pagos ---
 const PaymentHistory = ({ debt }) => {
   if (!debt) {
     return <div className="card payment-history-card placeholder">Selecciona una deuda para ver su historial de abonos.</div>;
@@ -51,13 +48,13 @@ const PaymentHistory = ({ debt }) => {
 
   return (
     <div className="card payment-history-card">
-      <h2>Historial de Abonos: {debt.name}</h2>
-      {debt.payments.length === 0 ? (
+      <h2>Historial de Abonos: {debt.descripcion}</h2>
+      {(debt.payments || []).length === 0 ? (
         <p>Aún no hay abonos para esta deuda.</p>
       ) : (
         <ul className="payment-list">
-          {debt.payments.map((payment, index) => (
-            <li key={index} className="payment-list-item">
+          {debt.payments.map((payment) => (
+            <li key={payment.id} className="payment-list-item">
               <span>{payment.date}</span>
               <strong>{formatCurrency(payment.amount)}</strong>
             </li>
@@ -68,23 +65,26 @@ const PaymentHistory = ({ debt }) => {
   );
 };
 
-// --- COMPONENTE MODIFICADO ---
-// Ahora recibe onDeleteDebt y lo pasa a cada DebtItem.
+// --- Componente Principal ---
 function DebtList({ debts, onSelectDebt, selectedDebt, onDeleteDebt }) {
   return (
     <>
       <div className="card">
         <h2>Deudas Activas</h2>
         <div className="debt-list-container">
-          {debts.map(debt => (
-            <DebtItem
-              key={debt.id}
-              debt={debt}
-              onSelectDebt={onSelectDebt}
-              isSelected={selectedDebt?.id === debt.id}
-              onDeleteDebt={onDeleteDebt} // <-- Lo pasamos aquí
-            />
-          ))}
+          {debts.length > 0 ? (
+            debts.map(debt => (
+              <DebtItem
+                key={debt.id}
+                debt={debt}
+                onSelectDebt={onSelectDebt}
+                isSelected={selectedDebt?.id === debt.id}
+                onDeleteDebt={onDeleteDebt}
+              />
+            ))
+          ) : (
+            <p>No hay deudas pendientes. ¡Felicidades!</p>
+          )}
         </div>
       </div>
       <PaymentHistory debt={selectedDebt} />
@@ -93,3 +93,4 @@ function DebtList({ debts, onSelectDebt, selectedDebt, onDeleteDebt }) {
 }
 
 export default DebtList;
+
