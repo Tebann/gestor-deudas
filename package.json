@@ -2,7 +2,7 @@
   "name": "gestor-deudas",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://Tebann.github.io/gestor-deudas",
+  "homepage": "https://tebann.github.io/gestor-deudas",
   "dependencies": {
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
