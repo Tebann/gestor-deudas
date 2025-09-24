@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { auth, googleProvider, db } from './firebase'; // Asegúrate de que la ruta a firebase.js sea correcta
+import { auth, googleProvider, db } from '../firebase'; // <-- AQUÍ ESTÁ LA CORRECCIÓN
 import { signInWithPopup, signOut, onAuthStateChanged } from 'firebase/auth';
 import {
   collection,
